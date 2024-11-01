@@ -1,7 +1,5 @@
 import streamlit as st
 import os
-from groq import Groq
-import random
 
 from langchain.chains import ConversationChain
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
@@ -29,23 +27,25 @@ def main():
     st.markdown("### Ask a question:")
     user_question = st.text_area("", height=100)
 
-    # session state variable
     if 'chat_history' not in st.session_state:
         st.session_state.chat_history = []
     else:
         for message in st.session_state.chat_history:
             memory.save_context({'input': message['human']}, {'output': message['AI']})
 
-    # Initialize Groq Langchain chat object and conversation
     groq_api_key = os.getenv("GROQ_API_KEY")
     if not groq_api_key:
         st.error("API key not found. Please set the GROQ_API_KEY environment variable.")
         return
 
-    groq_chat = ChatGroq(
-        groq_api_key=groq_api_key,
-        model_name=model
-    )
+    try:
+        groq_chat = ChatGroq(
+            groq_api_key=groq_api_key,
+            model_name=model
+        )
+    except ModuleNotFoundError:
+        st.error("ChatGroq module not found. Please ensure it is installed.")
+        return
 
     conversation = ConversationChain(
         llm=groq_chat,
