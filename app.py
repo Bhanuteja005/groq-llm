@@ -1,10 +1,14 @@
 import streamlit as st
 import os
 
-from langchain.chains import ConversationChain
-from langchain.chains.conversation.memory import ConversationBufferWindowMemory
-from langchain_groq import ChatGroq
-from langchain.prompts import PromptTemplate
+try:
+    from langchain.chains import ConversationChain
+    from langchain.chains.conversation.memory import ConversationBufferWindowMemory
+    from langchain_groq import ChatGroq
+    from langchain.prompts import PromptTemplate
+except ModuleNotFoundError as e:
+    st.error(f"Module not found: {e.name}. Please ensure all required modules are installed.")
+    st.stop()
 
 def main():
 
