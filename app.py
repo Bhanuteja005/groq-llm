@@ -11,7 +11,6 @@ except ModuleNotFoundError as e:
     st.stop()
 
 def main():
-
     st.title("🌟 Groq Chat App 🌟")
 
     # Add information about Groq in the sidebar
@@ -33,11 +32,15 @@ def main():
 
     if 'chat_history' not in st.session_state:
         st.session_state.chat_history = []
+    
+    # Populate chat history if it exists
     else:
         for message in st.session_state.chat_history:
             memory.save_context({'input': message['human']}, {'output': message['AI']})
 
-    groq_api_key = st.secrets["GROQ_API_KEY"]
+    # Access the API key from secrets
+    groq_api_key = st.secrets.get("GROQ_API_KEY")
+    
     if not groq_api_key:
         st.error("API key not found. Please set the GROQ_API_KEY environment variable.")
         return
