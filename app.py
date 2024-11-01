@@ -29,7 +29,7 @@ def main():
     memory = ConversationBufferWindowMemory(k=conversational_memory_length)
 
     st.markdown("### Ask a question:")
-    user_question = st.text_area("", height=100)
+    user_question = st.text_area("Your question:", height=100, label_visibility="collapsed")
 
     if 'chat_history' not in st.session_state:
         st.session_state.chat_history = []
@@ -37,7 +37,7 @@ def main():
         for message in st.session_state.chat_history:
             memory.save_context({'input': message['human']}, {'output': message['AI']})
 
-    groq_api_key = os.getenv("GROQ_API_KEY")
+    groq_api_key = st.secrets["GROQ_API_KEY"]
     if not groq_api_key:
         st.error("API key not found. Please set the GROQ_API_KEY environment variable.")
         return
