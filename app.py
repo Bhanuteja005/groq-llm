@@ -67,7 +67,7 @@ def main():
             
             st.markdown("#### You:")
             st.write(user_question)
-            st.markdown("#### Chatbot:")
+            st.markdown("#### GroQ:")
             st.write(response['response'])
 
             # Show balloons after getting response
